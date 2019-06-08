@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class Manipular
+public class ManipularArquivo
 {
 	public static void criarArquivo(String caminhoPai, String nomeDoArquivo)
 	{
@@ -28,8 +28,6 @@ public class Manipular
 	{
 		File arq = new File(caminhoPai + nomeDoArquivo);
 		arq.deleteOnExit();
-		
-		
 
 	}
 }

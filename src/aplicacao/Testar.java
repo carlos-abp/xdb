@@ -1,14 +1,21 @@
 package aplicacao;
 
 import funcoes.para_conteudo.ConfiguracaoDoCabecalho;
-import funcoes.para_conteudo.ManipularConteudo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author carlos-abp
+ */
 public class Testar
 {
 
+    /**
+     *
+     * @param args ferramenta de integracao com outras aplicao afim de gerir dados da propria aplicacao
+     */
     public static void main(String[] args)
     {
 

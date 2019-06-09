@@ -10,9 +10,19 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ *
+ * @author carlos-abp classe responsavel pela manipulacao de conteudo intriseco ao arq.
+ */
 public class ManipularConteudo
 {
 
+    /**
+     *
+     * @param Texto texto a introduzir no arquivo.
+     * @param arq arquiva para a inscrisao.
+     * @param adicionar se deseja acresentar ao texto original ou nao.
+     */
     public static void escreverNoArquivo(String Texto, File arq, Boolean adicionar)
     {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(arq, adicionar))) {
@@ -23,6 +33,10 @@ public class ManipularConteudo
         }
     }
 
+    /**
+     *
+     * @param Arq diretori completo
+     */
     public static void limparOArquivo(File Arq)
     {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(Arq))) {
@@ -33,6 +47,13 @@ public class ManipularConteudo
         }
     }
 
+    /**
+     * metodo que realiza a introducao de texto em uma linha bem expecifica
+     *
+     * @param Texto texto a escrever na linha. para posicao = 0 *nao feito
+     * @param Arq arquiva para a inscrisao.
+     * @param Posicao a linha que deseja reeditar.
+     */
     public static void escreverNoArquivo(String Texto, File Arq, int Posicao)
     {
         if (Posicao != 0) {
@@ -60,6 +81,12 @@ public class ManipularConteudo
         }
     }
 
+    /**
+     *
+     * @param arq arquiva para a inscrisao.
+     * @param linha linha que deseja ler
+     * @return A leitura do arquivo
+     */
     public static String lerNoArquivo(File arq, int linha)
     {
         if (VerificarOuAtualizar.arquivoExiste(arq.getPath())) {
@@ -85,6 +112,11 @@ public class ManipularConteudo
         return null;
     }
 
+    /**
+     *
+     * @param arq arquiva para a inscrisao.
+     * @return linha todas mapeada devido o retono ser map e provem uma manipulacao mais facil do texto
+     */
     public static Map<Integer, String> lerNoArquivo(File arq)
     {
         if (VerificarOuAtualizar.arquivoExiste(arq.getPath())) {

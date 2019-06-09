@@ -2,15 +2,33 @@ package funcoes.para_arquivos;
 
 import java.io.File;
 
-public class VerificarOuAtualizar {
+/**
+ *
+ * @author carlos-abp
+ */
+public class VerificarOuAtualizar
+{
 
-    public static Boolean arquivoExiste(String caminhoCompleto) {
+    /**
+     *
+     * @param caminhoCompleto caminho ate a pasta do arq ex: /home/carlos-abp/NetBeansProjects/XDB/config
+     * @return a existencia do arq
+     */
+    public static Boolean arquivoExiste(String caminhoCompleto)
+    {
         File arq = new File(caminhoCompleto);
         return arq.exists();
 
     }
 
-    public static Boolean arquivoEscreviviel(String caminhoCompleto, char ativarOUdesativar) {
+    /**
+     *
+     * @param caminhoCompleto caminho completo ex: /home/carlos-abp/NetBeansProjects/XDB/config/texto.txt
+     * @param ativarOUdesativar altera a permicao do arquivo se ele pode ser escrito ou nao
+     * @return se ele e te permicao para escrever ou nao
+     */
+    public static Boolean arquivoEscreviviel(String caminhoCompleto, char ativarOUdesativar)
+    {
         File arq = new File(caminhoCompleto);
         switch (ativarOUdesativar) {
             case 'a':
@@ -23,7 +41,14 @@ public class VerificarOuAtualizar {
         return arq.canWrite();
     }
 
-    public static Boolean arquivoLido(String caminhoCompleto, char ativarOUdesativar) {
+    /**
+     *
+     * @param caminhoCompleto caminho completo ex: /home/carlos-abp/NetBeansProjects/XDB/config/texto.txt
+     * @param ativarOUdesativar altera a permicao do arquivo se ele pode ser lido ou nao
+     * @return permicao do arquivo se ele pode se lido ou nao
+     */
+    public static Boolean arquivoLido(String caminhoCompleto, char ativarOUdesativar)
+    {
         File arq = new File(caminhoCompleto);
         switch (ativarOUdesativar) {
             case 'a':

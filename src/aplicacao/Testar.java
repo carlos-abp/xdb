@@ -1,6 +1,9 @@
 package aplicacao;
 
-import funcoes.para_conteudo.ConfiguracaoDoCabecalho;
+import funcoes.para_arquivos.ManipularArquivo;
+import funcoes.para_arquivos.VerificarOuAtualizar;
+import funcoes.para_xdb.ConfiguracaoDoCabecalho;
+import funcoes.para_xdb.ManipularXDB;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +17,19 @@ public class Testar
 
     /**
      *
-     * @param args ferramenta de integracao com outras aplicao afim de gerir dados da propria aplicacao
+     * @param args ferramenta de integracao com outras aplicacao afim de gerir dados da propria aplicacao hospedeira
      */
     public static void main(String[] args)
     {
 
-        File file = new File("config/teste.txt");
+        File file = new File("config");
 //
         List<String> cab = new ArrayList<>();
         cab.add("name,id(String/*,int/*)[chave=id]");
-//        //ConfiguracaoDoCabecalho.verificarCabechalho(cab);
-//        ConfiguracaoDoCabecalho.escreverCabechalho(cab, file);
+//
 
-        //ConfiguracaoDoCabecalho.escreverCabechalho(file, cab);
-        ConfiguracaoDoCabecalho.editarCabecalho(file, new String[]{"variavel", "id->001"});
+        ManipularXDB db = new ManipularXDB();
+        db.criarBaseDeDados(file, "bbb");
 
     }
 

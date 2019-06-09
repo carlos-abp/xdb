@@ -10,6 +10,12 @@ import java.io.IOException;
 public class ManipularArquivo
 {
 
+    public static void criarPasta(String caminhoPai)
+    {
+        File arq = new File(caminhoPai);
+        arq.mkdirs();
+    }
+
     /**
      *
      * @param caminhoPai caminho ate a pasta do arq ex: /home/carlos-abp/NetBeansProjects/XDB/config

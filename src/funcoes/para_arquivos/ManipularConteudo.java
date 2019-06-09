@@ -1,6 +1,5 @@
-package funcoes.para_conteudo;
+package funcoes.para_arquivos;
 
-import funcoes.para_arquivos.VerificarOuAtualizar;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

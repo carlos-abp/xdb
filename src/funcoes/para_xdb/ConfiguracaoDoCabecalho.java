@@ -1,5 +1,8 @@
-package funcoes.para_conteudo;
+package funcoes.para_xdb;
 
+
+
+import funcoes.para_arquivos.ManipularConteudo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -4,7 +4,9 @@ import funcoes.para_arquivos.ManipularConteudo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Carlos Alexandre Classe responsavel pela manipulacao do cabecalho, alterando funcionalidade deste.
@@ -16,9 +18,7 @@ public class ConfiguracaoDoCabecalho
      *campos responsavel pela estruturacao e funcionalidades da classe
      */
     private final Character separarCampo = ',';
-    private final Character[] isolarVar = new Character[]{'(', ')'};
     private final Character isolarQuantidade = '/';
-    private final Character[] isolarAtributo = new Character[]{'[', ']'};
 
     /**
      *
@@ -28,34 +28,34 @@ public class ConfiguracaoDoCabecalho
     public static Boolean verificarCabecalho(List<String> cabecalhoVerificar)
     {
         ConfiguracaoDoCabecalho c = new ConfiguracaoDoCabecalho();
+        if (cabecalhoVerificar.size() == 2) {
 
-        try {
-            if (cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarVar[0]))
-                    && cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarVar[1]))) {
-                if (cabecalhoVerificar.get(2).contains(String.valueOf(c.isolarAtributo[0]))
-                        && cabecalhoVerificar.get(2).contains(String.valueOf(c.isolarAtributo[1]))) {
-                    if (cabecalhoVerificar.get(0).contains(String.valueOf(c.separarCampo))
-                            && cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarQuantidade))) {
-                        return true;
-                    }
-                    else {
-                        System.out.println("Erro 12503: separadores nao indentificado");
-                    }
-
-                }
-                else {
-                    System.out.println("Erro 12502: nao foi possivel localizar atributos");
-                }
+            String[] listaDeNomes = cabecalhoVerificar.get(0).split(",");
+            String[] listaDeVariavel = cabecalhoVerificar.get(1).split(",");
+            if (listaDeNomes.length == listaDeVariavel.length) {
+                return true; //nao verifica os atributos da variaveis
             }
             else {
-                System.out.println("Erro 12501: nao foi possivel separar variaveis com tipos das variaveis");
+                System.out.println("Erro 12515 Numeros inconpativel de variavel e tipos");
             }
 
+        }
+        else {
+            System.out.println("Erro 12514 Numeros de index incompativel");
             return false;
         }
-        catch (IndexOutOfBoundsException e) {
-            System.out.println("Erro 12508 : Lista incompativel " + e.getMessage());
-        }
+        return false;
+    }
+
+    public static Map<Integer, String> verificarAtributosDasVariaveis(File arqDeCabecalho)
+    {
+        Map<Integer, String> mapaDosAtributosDasVariaveis = new HashMap<>();
+        mapaDosAtributosDasVariaveis = ManipularConteudo.lerNoArquivo(arqDeCabecalho);
+
+        System.out.println(mapaDosAtributosDasVariaveis.get(1));
+
+        String[] listaCruaDoMap = mapaDosAtributosDasVariaveis.get(1).split(",");
+
         return null;
     }
 
@@ -77,7 +77,9 @@ public class ConfiguracaoDoCabecalho
 
                 ManipularConteudo.escreverNoArquivo(CabecalhoEscrever.get(0), new File(caminhoDoCabecalho), false);
                 ManipularConteudo.escreverNoArquivo(CabecalhoEscrever.get(1), new File(caminhoDoCabecalho), true);
-                ManipularConteudo.escreverNoArquivo(CabecalhoEscrever.get(2), new File(caminhoDoCabecalho), true);
+                if (CabecalhoEscrever.size() == 3) {
+                    ManipularConteudo.escreverNoArquivo(CabecalhoEscrever.get(2), new File(caminhoDoCabecalho), true);
+                }
 
                 return true;
             }

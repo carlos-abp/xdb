@@ -11,26 +11,24 @@ public class ManipularXDB
 {
 
     private String nomeDoXDB;
+    private File caminhoDoXDB;
 
     public ManipularXDB(String nomeDoXDB)
     {
         this.nomeDoXDB = nomeDoXDB;
     }
 
-    public void setNomeDoXDB(String novoNomeDoXDB)
+    public ManipularXDB(File caminho, String nomeDoXDB)
     {
         this.nomeDoXDB = nomeDoXDB;
+        this.caminhoDoXDB = caminho;
     }
-
-    public String getNomeDoXDB()
-    {
-        return nomeDoXDB;
-    }
+//----------------------------------------------------------------------------------------------------------
 
     /**
      *
      * @param caminho a pasta que deseja criar ex:/home/carlos-abp/Documentos
-     * @param nomeDoXDB nome escolhido XDB
+     *
      */
     public void criarBaseDeDados(File caminho)
     {
@@ -46,15 +44,49 @@ public class ManipularXDB
         }
     }
 
-    public void excluirBaseDeDados(File caminho)
+    public void excluirBaseDeDados()
     {
 
-        if (new File(caminho.getPath() + "/" + nomeDoXDB).exists()) {
-            ManipularArquivo.excluirArquivos(caminho.getPath(), nomeDoXDB);
+        if (new File(caminhoDoXDB.getPath() + "/" + nomeDoXDB).exists()) {
+            ManipularArquivo.excluirArquivos(caminhoDoXDB.getPath(), nomeDoXDB);
         }
         else {
             System.out.println("Base de dados XDB nao existe");
         }
     }
 
+    public void renomearBaseDeDados(String novoNomeDoXDB)
+    {
+
+        File arq = new File(caminhoDoXDB + "/" + nomeDoXDB);
+
+        if (arq.renameTo(new File(caminhoDoXDB + "/" + novoNomeDoXDB))) {
+            File arq2 = new File(caminhoDoXDB + "/" + novoNomeDoXDB + "/" + nomeDoXDB + ".xdb");
+            arq2.renameTo(new File(caminhoDoXDB + "/" + novoNomeDoXDB + "/" + novoNomeDoXDB + ".xdb"));
+        }
+        else {
+            System.out.println("Erro 12511");
+        }
+    }
+
+//_________________________________________________________________________________________________________
+    public void setNomeDoXDB(String novoNomeDoXDB)
+    {
+        this.nomeDoXDB = nomeDoXDB;
+    }
+
+    public String getNomeDoXDB()
+    {
+        return nomeDoXDB;
+    }
+
+    public void setcaminhoDoXDB(File caminhoDoXDB)
+    {
+        this.caminhoDoXDB = caminhoDoXDB;
+    }
+
+    public File getcaminhoDoXDB()
+    {
+        return caminhoDoXDB;
+    }
 }

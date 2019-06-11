@@ -137,7 +137,7 @@ public class ManipularConteudo
                 return textoKM;
             }
             catch (IOException e) {
-                System.out.println("Erro 12507: " + e.getMessage());
+                System.out.println("Erro 12520: " + e.getMessage());
             }
         }
         else {

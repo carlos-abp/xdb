@@ -22,19 +22,18 @@ public class Testar
     public static void main(String[] args)
     {
 
-        File file = new File("test");
+        File file = new File("teste");
 
         List<String> cab = new ArrayList<>();
         cab.add("id,nome,sobrenome");
-        cab.add("(Int,String/*,String/6)");
-        cab.add("[language=us]");
+        cab.add("Int,String/*,String/6");
 
-        ManipularXDB db = new ManipularXDB("cliente");
-
-        db.criarBaseDeDados(file);
+        ManipularXDB db = new ManipularXDB(file, "testeXDB");
+        //db.criarBaseDeDados(file);
         ConfiguracaoDoCabecalho.escreverCabechalho(file, db.getNomeDoXDB(), cab);
-        //db.excluirBaseDeDados(file);
-        //ConfiguracaoDoCabecalho.editarCabecalho(new File(file.getPath() + "/" + "clientes"),);
+        // db.excluirBaseDeDados();
+//        ConfiguracaoDoCabecalho.editarCabecalho(new File(file.getPath() + "/" + "clientes"), cab);
+        //db.renomearBaseDeDados("client21");
 
     }
 

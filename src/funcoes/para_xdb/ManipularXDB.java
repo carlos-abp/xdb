@@ -10,12 +10,29 @@ import java.io.File;
 public class ManipularXDB
 {
 
+    private String nomeDoXDB;
+
+    public ManipularXDB(String nomeDoXDB)
+    {
+        this.nomeDoXDB = nomeDoXDB;
+    }
+
+    public void setNomeDoXDB(String novoNomeDoXDB)
+    {
+        this.nomeDoXDB = nomeDoXDB;
+    }
+
+    public String getNomeDoXDB()
+    {
+        return nomeDoXDB;
+    }
+
     /**
      *
      * @param caminho a pasta que deseja criar ex:/home/carlos-abp/Documentos
      * @param nomeDoXDB nome escolhido XDB
      */
-    public void criarBaseDeDados(File caminho, String nomeDoXDB)
+    public void criarBaseDeDados(File caminho)
     {
         String x = caminho.toString() + "/" + nomeDoXDB + "/";
 
@@ -29,11 +46,11 @@ public class ManipularXDB
         }
     }
 
-    public void excluirBaseDeDados(File caminho, String nomeDoXDB)
+    public void excluirBaseDeDados(File caminho)
     {
 
         if (new File(caminho.getPath() + "/" + nomeDoXDB).exists()) {
-            //ManipularArquivo.excluirArquivo(caminho.getPath(), nomeDoXDB);
+            ManipularArquivo.excluirArquivos(caminho.getPath(), nomeDoXDB);
         }
         else {
             System.out.println("Base de dados XDB nao existe");

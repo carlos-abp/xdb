@@ -1,6 +1,8 @@
 package aplicacao;
 
 import funcoes.para_arquivos.ManipularArquivo;
+import funcoes.para_arquivos.ManipularConteudo;
+import funcoes.para_xdb.ConfiguracaoDoCabecalho;
 import funcoes.para_xdb.ManipularXDB;
 import java.io.File;
 import java.util.ArrayList;
@@ -20,19 +22,20 @@ public class Testar
     public static void main(String[] args)
     {
 
-//        File file = new File("teste");
-//
-//        List<String> cab = new ArrayList<>();
-//        cab.add("name,id");
-//        cab.add("(String/*,int/*)");
-//        cab.add("[chave=id]");
-//
-//        ManipularXDB db = new ManipularXDB();
-//
-//        db.criarBaseDeDados(file, "bd");
-//        //ConfiguracaoDoCabecalho.escreverCabechalho(file, "bd", cab);
-//        //db.excluirBaseDeDados(file, "bd");
-        ManipularArquivo.excluirArquivos("t", "teste");
+        File file = new File("test");
+
+        List<String> cab = new ArrayList<>();
+        cab.add("id,nome,sobrenome");
+        cab.add("(Int,String/*,String/6)");
+        cab.add("[language=us]");
+
+        ManipularXDB db = new ManipularXDB("cliente");
+
+        db.criarBaseDeDados(file);
+        ConfiguracaoDoCabecalho.escreverCabechalho(file, db.getNomeDoXDB(), cab);
+        //db.excluirBaseDeDados(file);
+        //ConfiguracaoDoCabecalho.editarCabecalho(new File(file.getPath() + "/" + "clientes"),);
+
     }
 
 }

@@ -43,6 +43,7 @@ public class ManipularArquivo
      *
      * @param caminhoPai caminho ate a pasta do arq ex: /home/carlos-abp/NetBeansProjects/XDB/config
      * @param nomeDoArquivoOuPasta nome da pasta ou arquivo que deseja excluir por campleto
+     * @return se o metodo exclui ou nao o arq,dir
      */
     public static Boolean excluirArquivos(String caminhoPai, String nomeDoArquivoOuPasta)
     {
@@ -97,11 +98,11 @@ public class ManipularArquivo
     /**
      * Metodo que excluir as pastas dentro da pasta que deseja excluir
      *
-     * @param caminhoPai
+     * @param caminhoPai Passa-se o caminho completo ex:"/home/eclipse/program" || "/home/eclipse/program.exe"
      */
-    private static void EXcluirArquivos(String caminhoPai)
+    private static void EXcluirArquivos(String caminhoCompleto)
     {
-        File arq = new File(new File(caminhoPai).getParent() + "/" + new File(caminhoPai).getName());
+        File arq = new File(new File(caminhoCompleto).getParent() + "/" + new File(caminhoCompleto).getName());
         System.out.println(arq);
         String[] filhos = arq.list();
         Map<Integer, String> arvoresDePastas = new TreeMap<>();

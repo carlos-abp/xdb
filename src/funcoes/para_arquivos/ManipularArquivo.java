@@ -39,9 +39,10 @@ public class ManipularArquivo
     }
 
     /**
+     * excluirArquivo("/home/carlos","gmail.txt");
      *
      * @param caminhoPai caminho ate a pasta do arq ex: /home/carlos-abp/NetBeansProjects/XDB/config
-     * @param nomeDoArquivoOuPasta nome e estencao ex: texto.txt
+     * @param nomeDoArquivoOuPasta nome da pasta ou arquivo que deseja excluir por campleto
      */
     public static Boolean excluirArquivos(String caminhoPai, String nomeDoArquivoOuPasta)
     {
@@ -60,7 +61,6 @@ public class ManipularArquivo
                 for (int i = 0; i < filhos.length; i++) {
                     File pastaTemporaria = new File(arq + "/" + filhos[i]);
                     if (pastaTemporaria.isFile()) {
-                        System.out.println("del: " + pastaTemporaria.getPath());
                         pastaTemporaria.delete();
                     }
                     else {
@@ -68,13 +68,10 @@ public class ManipularArquivo
                         String[] temporario = pastaTemporaria.list();
 
                         if (temporario.length == 0) {
-                            System.out.println("del Pasta " + pastaTemporaria);
-
                             pastaTemporaria.delete();
                         }
                         else {
                             arvoresDePastas.put(i, pastaTemporaria.getPath());
-                            System.out.println(i + " >> " + pastaTemporaria.getPath());
                         }
 
                     }
@@ -82,25 +79,27 @@ public class ManipularArquivo
                 }
 
                 for (Integer a : arvoresDePastas.keySet()) {
-                    System.out.println("map " + a + " <>" + arvoresDePastas.get(a));
                     try {
-                        System.out.println("---------------------");
-                        excluirArquivos(arvoresDePastas.get(a));
+                        EXcluirArquivos(arvoresDePastas.get(a));
+
                     }
                     catch (NullPointerException e) {
-                        System.out.println(e.getMessage());
                     }
                 }
-                System.out.println(arq.delete());
 
             }
 
         }
 
-        return false;
+        return arq.delete();
     }
 
-    private static void excluirArquivos(String caminhoPai)
+    /**
+     * Metodo que excluir as pastas dentro da pasta que deseja excluir
+     *
+     * @param caminhoPai
+     */
+    private static void EXcluirArquivos(String caminhoPai)
     {
         File arq = new File(new File(caminhoPai).getParent() + "/" + new File(caminhoPai).getName());
         System.out.println(arq);

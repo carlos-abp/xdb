@@ -1,7 +1,5 @@
 package funcoes.para_xdb;
 
-
-
 import funcoes.para_arquivos.ManipularConteudo;
 import java.io.File;
 import java.util.ArrayList;
@@ -27,52 +25,71 @@ public class ConfiguracaoDoCabecalho
      * @param cabecalhoVerificar Recebe o cabechalho e verifica se esta bem estruturado tanto com pontuacao quanto estrutura ex:(^ = ,) List[nome,id ^ (String/*,Integer) ^ [code=pt]].
      * @return Se o cabechalho cumpre os requesitos
      */
-    public static Boolean verificarCabechalho(List<String> cabecalhoVerificar)
+    public static Boolean verificarCabecalho(List<String> cabecalhoVerificar)
     {
         ConfiguracaoDoCabecalho c = new ConfiguracaoDoCabecalho();
 
-        if (cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarVar[0]))
-                && cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarVar[1]))) {
-            if (cabecalhoVerificar.get(2).contains(String.valueOf(c.isolarAtributo[0]))
-                    && cabecalhoVerificar.get(2).contains(String.valueOf(c.isolarAtributo[1]))) {
-                if (cabecalhoVerificar.get(0).contains(String.valueOf(c.isolarQuantidade))
-                        && cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarQuantidade))) {
-                    return true;
+        try {
+            if (cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarVar[0]))
+                    && cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarVar[1]))) {
+                if (cabecalhoVerificar.get(2).contains(String.valueOf(c.isolarAtributo[0]))
+                        && cabecalhoVerificar.get(2).contains(String.valueOf(c.isolarAtributo[1]))) {
+                    if (cabecalhoVerificar.get(0).contains(String.valueOf(c.separarCampo))
+                            && cabecalhoVerificar.get(1).contains(String.valueOf(c.isolarQuantidade))) {
+                        return true;
+                    }
+                    else {
+                        System.out.println("Erro 12503: separadores nao indentificado");
+                    }
+
                 }
                 else {
-                    System.out.println("Erro 12503: separadores nao indentificado");
+                    System.out.println("Erro 12502: nao foi possivel localizar atributos");
                 }
-
             }
             else {
-                System.out.println("Erro 12502: nao foi possivel localizar atributos");
+                System.out.println("Erro 12501: nao foi possivel separar variaveis com tipos das variaveis");
             }
-        }
-        else {
-            System.out.println("Erro 12501: nao foi possivel separar variaveis com tipos das variaveis");
-        }
 
-        return false;
+            return false;
+        }
+        catch (IndexOutOfBoundsException e) {
+            System.out.println("Erro 12508 : Lista incompativel " + e.getMessage());
+        }
+        return null;
     }
 
     /**
      *
-     * @param Arq File instanciado de forma que o diretorio completo, com arqivo e estencao seja do XDB criado.
+     * @param Arq instanciado de forma que o diretorio seja a onde foi criado a base de dados,ex: crie na pasta "/home/carlos-abp/Documentos" diretorio completo
+     * /home/carlos-abp/Documentos/myDados/myDados.xdb.
      * @param CabecalhoEscrever Este parametro de obdecer ex:(^ = ,) List[nome,id ^ (String/*,Integer) ^ [code=pt]]
+     * @param nomeXDB nome dado ao banco de dados criado
      * @return Se foi ou nao escrito.
      */
-    public static Boolean escreverCabechalho(File Arq, List<String> CabecalhoEscrever)
+    public static Boolean escreverCabechalho(File Arq, String nomeXDB, List<String> CabecalhoEscrever)
     {
-        if (verificarCabechalho(CabecalhoEscrever)) {
-            ConfiguracaoDoCabecalho c = new ConfiguracaoDoCabecalho();
+        String caminhoDoCabecalho = Arq.toString() + "/" + nomeXDB + "/.cabecalho";
 
-            ManipularConteudo.escreverNoArquivo(CabecalhoEscrever.get(0), new File(Arq.getParent() + "/.cabecalho.xdb"), false);
+        if (new File(caminhoDoCabecalho).exists()) {
+            if (verificarCabecalho(CabecalhoEscrever)) {
+                ConfiguracaoDoCabecalho c = new ConfiguracaoDoCabecalho();
 
-            return true;
+                ManipularConteudo.escreverNoArquivo(CabecalhoEscrever.get(0), new File(caminhoDoCabecalho), false);
+                ManipularConteudo.escreverNoArquivo(CabecalhoEscrever.get(1), new File(caminhoDoCabecalho), true);
+                ManipularConteudo.escreverNoArquivo(CabecalhoEscrever.get(2), new File(caminhoDoCabecalho), true);
+
+                return true;
+            }
+            else {
+                System.out.println("Erro 12506 : erro lista de cabecalho invalida");
+            }
+
         }
         else {
-            return null;
+            System.out.println("Erro 12507 : nao encontrado o arquivo .cabecalho");
         }
+        return null;
     }
 
     /**

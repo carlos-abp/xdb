@@ -27,10 +27,10 @@ public class Testar
         //baseNova.criarBaseDeDados(arquivo);
         List<String> cab = new ArrayList<>();
         cab.add("id,nome,sexo");
-        cab.add("String/^:12:?,Double/?:3.3,Integer/3,Char/?");
+        cab.add("String/^:12:?,Double/?:3.3,Integer/3");
         cab.add("code=us");
 
-        System.out.println(cnf.AtributosDasVariaveis(cab.get(1)));
+        cnf.escreverCabechalho(cab);
     }
 
 }

@@ -3,9 +3,7 @@ package funcoes.para_xdb;
 import funcoes.para_arquivos.ManipularConteudo;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Carlos Alexandre Classe responsavel pela manipulacao do cabecalho, alterando funcionalidade deste.
@@ -41,7 +39,7 @@ public class ConfiguracaoDoXDB
      * @param cabecalhoVerificar Recebe o cabechalho e verifica se esta bem estruturado tanto com pontuacao quanto estrutura ex:(^ = ,) List[nome,id ^ (String/*,Integer) ^ [code=pt]].
      * @return Se o cabechalho cumpre os requesitos
      */
-    public Boolean verificarOCabecalho(List<String> cabecalhoVerificar)
+    public List<String> verificarOCabecalho(List<String> cabecalhoVerificar)
     {
 
         if (cabecalhoVerificar.size() == 2 || cabecalhoVerificar.size() == 3) {
@@ -50,23 +48,35 @@ public class ConfiguracaoDoXDB
             String[] listaDeVariavel = cabecalhoVerificar.get(1).split(",");
 
             if (listaDeNomes.length == listaDeVariavel.length) {
+                if (AtributosDasVariaveis(cabecalhoVerificar.get(1)) != null) {
+                    String temp = cabecalhoVerificar.get(1);
+                    String temp2 = "";
+                    for (String a : AtributosDasVariaveis(cabecalhoVerificar.get(1))) {
+                        temp2 += a;
+                    }
 
-                return true;
+                    cabecalhoVerificar.remove(1);
+                    cabecalhoVerificar.add(1, temp2);
 
+                    return cabecalhoVerificar;
+                }
+                else {
+                    return null;
+                }
             }
             else {
                 System.out.println("Erro 12515 Numeros inconpativel de variavel e tipos");
-                return false;
+                return null;
             }
         }
         else {
             System.out.println("Erro 12514 Numeros de index incompativel");
-            return false;
+            return null;
         }
 
     }
 
-    public List<String> AtributosDasVariaveis(String trecho)
+    private List<String> AtributosDasVariaveis(String trecho)
     {
 //        String/@?:int:^
 //        Integer/@?:int
@@ -103,6 +113,7 @@ public class ConfiguracaoDoXDB
                                     }
                                     else {
                                         System.out.println("Erro 12520 dados incompativel");
+                                        return null;
                                     }
                                 }
 
@@ -168,9 +179,11 @@ public class ConfiguracaoDoXDB
                                 if (!"?".equals(b.trim())) {
                                     if (verificarCHARouINTEGER("num", b)) {
                                         numVerificado = b;
+
                                     }
                                     else {
                                         System.out.println("Erro 12524 dados incompativel");
+                                        return null;
                                     }
                                 }
 
@@ -212,7 +225,7 @@ public class ConfiguracaoDoXDB
                 case "Double":
                     try {
                         boolean argumentoVazio = verificar[1].contains("?");
-                        boolean letraDeForma = verificar[1].contains(".");
+
                         String numVerificado = "";
                         String formatado = "Double/";
 
@@ -228,32 +241,20 @@ public class ConfiguracaoDoXDB
                                     }
                                     else {
                                         System.out.println("Erro 12520 dados incompativel");
+                                        return null;
                                     }
                                 }
 
                             }
 
-                            if (argumentoVazio && letraDeForma && !numVerificado.isEmpty()) {
-                                formatado = ("Double/" + numVerificado + ":?:^");
-                            }
-                            else if (argumentoVazio && letraDeForma) {
-                                formatado = ("Double/?:^");
-                            }
-                            else if (argumentoVazio && !numVerificado.isEmpty()) {
-                                formatado = ("Double/?:^");
-                            }
-                            else if (letraDeForma && !numVerificado.isEmpty()) {
-                                formatado = ("Double/" + numVerificado + ":^");
-
+                            if (argumentoVazio && !numVerificado.isEmpty()) {
+                                formatado = ("Double/" + numVerificado + ":?");
                             }
                             else if (argumentoVazio) {
                                 formatado = ("Double/?");
                             }
                             else if (!numVerificado.isEmpty()) {
                                 formatado = ("Double/" + numVerificado);
-                            }
-                            else {
-                                formatado = ("Double/^");
                             }
 
                         }
@@ -388,7 +389,7 @@ public class ConfiguracaoDoXDB
 
         if (new File(caminhoDoCabecalho).exists() && new File(caminhoDoConfig).exists()) {
 
-            if (verificarOCabecalho(CabecalhoEscrever)) {
+            if (verificarOCabecalho(CabecalhoEscrever) != null) {
 
                 for (String a : CabecalhoEscrever) {
                     if (CabecalhoEscrever.get(0).equals(a)) {

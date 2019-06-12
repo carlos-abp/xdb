@@ -5,7 +5,9 @@
         <group>
             <file>file:/home/carlos-abp/NetBeansProjects/XDB/src/aplicacao/Testar.java</file>
             <file>file:/home/carlos-abp/NetBeansProjects/XDB/src/funcoes/para_arquivos/ManipularConteudo.java</file>
-            <file>file:/home/carlos-abp/NetBeansProjects/XDB/src/funcoes/para_xdb/ConfiguracaoDoCabecalho.java</file>
+            <file>file:/home/carlos-abp/NetBeansProjects/XDB/src/funcoes/para_xdb/ManipularXDB.java</file>
+            <file>file:/home/carlos-abp/NetBeansProjects/XDB/src/funcoes/para_arquivos/VerificarOuAtualizar.java</file>
+            <file>file:/home/carlos-abp/NetBeansProjects/XDB/src/funcoes/para_xdb/ConfiguracaoDoXDB.java</file>
         </group>
     </open-files>
 </project-private>

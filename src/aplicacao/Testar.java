@@ -1,8 +1,6 @@
 package aplicacao;
 
-import funcoes.para_arquivos.ManipularArquivo;
-import funcoes.para_arquivos.ManipularConteudo;
-import funcoes.para_xdb.ConfiguracaoDoCabecalho;
+import funcoes.para_xdb.ConfiguracaoDoXDB;
 import funcoes.para_xdb.ManipularXDB;
 import java.io.File;
 import java.util.ArrayList;
@@ -21,20 +19,18 @@ public class Testar
      */
     public static void main(String[] args)
     {
+        File arquivo = new File("teste");
 
-        File file = new File("teste");
+        ManipularXDB baseNova = new ManipularXDB(arquivo, "clientes");
+        ConfiguracaoDoXDB cnf = new ConfiguracaoDoXDB(baseNova.getcaminhoDoXDB(), baseNova.getNomeDoXDB());
 
+        //baseNova.criarBaseDeDados(arquivo);
         List<String> cab = new ArrayList<>();
-        cab.add("id,nome,sobrenome");
-        cab.add("Int,String/*,String/6");
+        cab.add("id,nome,sexo");
+        cab.add("String/^:12:?,Double/?:3.3,Integer/3,Char/?");
+        cab.add("code=us");
 
-        ManipularXDB db = new ManipularXDB(file, "testeXDB");
-        //db.criarBaseDeDados(file);
-        ConfiguracaoDoCabecalho.escreverCabechalho(file, db.getNomeDoXDB(), cab);
-        // db.excluirBaseDeDados();
-//        ConfiguracaoDoCabecalho.editarCabecalho(new File(file.getPath() + "/" + "clientes"), cab);
-        //db.renomearBaseDeDados("client21");
-
+        System.out.println(cnf.AtributosDasVariaveis(cab.get(1)));
     }
 
 }

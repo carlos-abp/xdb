@@ -12,6 +12,7 @@ public class ManipularXDB
 
     private String nomeDoXDB;
     private File caminhoDoXDB;
+    public final File caminhoCompleto = new File(caminhoDoXDB + "/" + nomeDoXDB);
 
     public ManipularXDB(String nomeDoXDB)
     {

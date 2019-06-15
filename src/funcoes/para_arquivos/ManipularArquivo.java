@@ -13,9 +13,9 @@ public class ManipularArquivo
 
     private String[] pastasEArq;
 
-    public static void criarPasta(String caminhoPai)
+    public static void criarPasta(String caminhoCompleto)
     {
-        File arq = new File(caminhoPai);
+        File arq = new File(caminhoCompleto);
         arq.mkdirs();
     }
 
@@ -45,9 +45,9 @@ public class ManipularArquivo
      * @param nomeDoArquivoOuPasta nome da pasta ou arquivo que deseja excluir por campleto
      * @return se o metodo exclui ou nao o arq,dir
      */
-    public static Boolean excluirArquivos(String caminhoPai, String nomeDoArquivoOuPasta)
+    public static Boolean excluirArquivos(String caminhoPai, String nomeDoArquivo)
     {
-        File arq = new File(caminhoPai + "/" + nomeDoArquivoOuPasta);
+        File arq = new File(caminhoPai + "/" + nomeDoArquivo);
         String[] filhos = arq.list();
         Map<Integer, String> arvoresDePastas = new TreeMap<>();
 
@@ -100,7 +100,7 @@ public class ManipularArquivo
      *
      * @param caminhoPai Passa-se o caminho completo ex:"/home/eclipse/program" || "/home/eclipse/program.exe"
      */
-    private static void EXcluirArquivos(String caminhoCompleto)
+    private static void ExcluirArquivos(String caminhoCompleto)
     {
         File arq = new File(new File(caminhoCompleto).getParent() + "/" + new File(caminhoCompleto).getName());
         System.out.println(arq);

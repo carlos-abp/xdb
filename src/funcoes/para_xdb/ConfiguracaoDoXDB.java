@@ -28,7 +28,7 @@ public class ConfiguracaoDoXDB
      * @param arqAPesquisar caminho ate a pasta do arq ex: /home/XDB/teste
      * @return a existencia do arquivo .cabecalho ou do .config
      */
-    public Boolean arquivoExiste(String arqAPesquisar)
+    private Boolean xdbExiste(String arqAPesquisar)
     {
         File arq = new File(arqComPastaXDB + "/" + arqAPesquisar);
         return arq.exists();
@@ -169,7 +169,7 @@ public class ConfiguracaoDoXDB
                         boolean argumentoVazio = verificar[1].contains("?");
                         String numVerificado = "";
                         String formatado = "";
-
+                        
                         if (verificar[1].split(":").length <= 2) {
 
                             String[] temporario = verificar[1].split(":");

@@ -1,7 +1,0 @@
-name,id(String/*,int/*)[chave=id]
-
-separarCampo=,
-isolarVar=()
-isolarQuantidade=/
-isolarAtributo=[]
-

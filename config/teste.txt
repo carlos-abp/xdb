@@ -1,3 +1,0 @@
-nome,001
-(String/*,int/*)
-[chave=id]

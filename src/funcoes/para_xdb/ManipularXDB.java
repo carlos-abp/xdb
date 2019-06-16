@@ -2,6 +2,8 @@ package funcoes.para_xdb;
 
 import funcoes.para_arquivos.ManipularArquivo;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -11,69 +13,83 @@ public class ManipularXDB
 {
 
     private String nomeDoXDB;
-    private File caminhoDoXDB;
-    public final File caminhoCompleto = new File(caminhoDoXDB + "/" + nomeDoXDB);
+    private File caminhoDaPasta;
+    private File caminhoCompleto;
 
-    public ManipularXDB(String nomeDoXDB)
+    public ManipularXDB()
     {
-        this.nomeDoXDB = nomeDoXDB;
+        
     }
 
     public ManipularXDB(File caminho, String nomeDoXDB)
     {
         this.nomeDoXDB = nomeDoXDB;
-        this.caminhoDoXDB = caminho;
+        this.caminhoDaPasta = caminho;
     }
 //----------------------------------------------------------------------------------------------------------
 
     /**
      *
-     * @param caminho a pasta que deseja criar ex:/home/carlos-abp/Documentos
-     *
+     * cria-se uma base de dados XDB
+     *@return criado ou nao criado
      */
-    public void criarBaseDeDados(File caminho)
+    public Boolean criarBaseDeDados()
     {
-        String caminhoCompleto= caminho.toString() + "/" + nomeDoXDB + "/";
-
-        if (!new File(caminhoCompleto).exists()) {
-            ManipularArquivo.criarPasta(caminhoCompleto);
-            ManipularArquivo.criarArquivo(caminhoCompleto, nomeDoXDB + ".xdb");
-            ManipularArquivo.criarArquivo(caminhoCompleto, ".cabecalho");
+        if(nomeDoXDB == null || nomeDoXDB.isEmpty())
+        {
+        	 System.out.println("Erro 12549 nome do banco nao atribuido.");
+        	 return false;
         }
-        else {
-            System.out.println("Base de dados XDB ja existente");
+        if(caminhoDaPasta == null || caminhoDaPasta.toString().isEmpty())
+        {
+        	 System.out.println("Erro 12549 diretorio do banco nao atribuido.");
+        	 return false;
+        }
+        else 
+        {
+        	
+        	caminhoCompleto = new File(caminhoDaPasta + "/"+nomeDoXDB); 
+        	
+        	System.out.println(caminhoCompleto.getAbsolutePath());
+        	
+	        if (!caminhoCompleto.exists()) {
+	            ManipularArquivo.criarPasta(caminhoCompleto.getAbsolutePath());
+	            ManipularArquivo.criarArquivo(caminhoCompleto.getAbsolutePath()+"/", nomeDoXDB + ".xdb");
+	            ManipularArquivo.criarArquivo(caminhoCompleto.getAbsolutePath()+"/", ".configuracao");
+	        }
+	        else {
+	            System.out.println("Base de dados XDB ja existente");
+	        }
+	        return true;
         }
     }
 
-    public void excluirBaseDeDados()
+    
+    public Boolean excluirBaseDeDados()
     {
-
-        if (new File(caminhoDoXDB.getPath() + "/" + nomeDoXDB).exists()) {
-            ManipularArquivo.excluirArquivos(caminhoDoXDB.getPath(), nomeDoXDB);
-        }
-        else {
-            System.out.println("Base de dados XDB nao existe");
-        }
+    	return ManipularArquivo.excluirArquivos(caminhoDaPasta.getPath(), nomeDoXDB);   
     }
 
+    
     public void renomearBaseDeDados(String novoNomeDoXDB)
     {
-
-        File arq = new File(caminhoDoXDB + "/" + nomeDoXDB);
-
-        if (arq.renameTo(new File(caminhoDoXDB + "/" + novoNomeDoXDB))) {
-            File arq2 = new File(caminhoDoXDB + "/" + novoNomeDoXDB + "/" + nomeDoXDB + ".xdb");
-            arq2.renameTo(new File(caminhoDoXDB + "/" + novoNomeDoXDB + "/" + novoNomeDoXDB + ".xdb"));
-        }
-        else {
-            System.out.println("Erro 12511");
-        }
+    	
+    	if(!novoNomeDoXDB.isEmpty() || novoNomeDoXDB != null) 
+    	{
+    		new File(caminhoDaPasta+"/"+nomeDoXDB).renameTo(new File(caminhoDaPasta+"/"+novoNomeDoXDB));
+        	
+        	caminhoCompleto = new File(caminhoDaPasta+"/"+novoNomeDoXDB);
+        	
+        	new File(caminhoCompleto+"/"+nomeDoXDB+".xdb").renameTo(new File(caminhoCompleto+"/"+novoNomeDoXDB+".xdb"));
+        	
+    	}      
+    
     }
 
-//_________________________________________________________________________________________________________
+//_______________________________________________________________________________________________________
     public void setNomeDoXDB(String novoNomeDoXDB)
     {
-        this.nomeDoXDB = nomeDoXDB;
+        this.nomeDoXDB = novoNomeDoXDB;
     }
 
     public String getNomeDoXDB()
@@ -81,13 +97,13 @@ public class ManipularXDB
         return nomeDoXDB;
     }
 
-    public void setcaminhoDoXDB(File caminhoDoXDB)
+    public void setCaminhoDoXDB(File novoCaminhoDoXDB)
     {
-        this.caminhoDoXDB = caminhoDoXDB;
+        this.caminhoDaPasta = novoCaminhoDoXDB;
     }
 
-    public File getcaminhoDoXDB()
+    public File getCaminhoDoXDB()
     {
-        return caminhoDoXDB;
+        return caminhoDaPasta;
     }
 }

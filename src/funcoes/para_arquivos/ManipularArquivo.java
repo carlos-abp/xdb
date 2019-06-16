@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 /**
  * @author carlos-abp
+ * @version 0.0.4
  */
 public class ManipularArquivo {
 
@@ -46,16 +47,19 @@ public class ManipularArquivo {
 	 * @return o resultado da exclusao. 
 	 */
 	public static Boolean excluirArquivos(String caminhoPai, String nomeDoArquivo) {
-		/*
-		 * Melhorar o codigo abaixo muitas instancia do File sendo iniciada if("*")
-		 *    solucao Usar a classe privada excluirArq(String)
-		 */
-		if(nomeDoArquivo.equals("*")) {
-			ManipularArquivo.excluirArquivos(new File(new File(caminhoPai).getAbsolutePath()).getParent()+"/",caminhoPai);
+	
+		//linha para verificar o diretorioPai NESSESARIO PARA FAZER TESTE DENTRO DO PROJETO
+		if(caminhoPai.isEmpty())
+						caminhoPai = new File(new File(nomeDoArquivo).getAbsolutePath()).getParent().toString();
+/* !!!!!!!!!! <^> */
+		//comando que e passado no argumento do metodo apagar todos os arquivos da pasta
+	else if(nomeDoArquivo.equals("*")) {
+			ManipularArquivo.excluirArquivos(caminhoPai);
 			ManipularArquivo.criarPasta(caminhoPai);
 			
 			return true;
 		}
+		//verifica a passagem do nome do arq;
 		if(!nomeDoArquivo.isEmpty()) 
 		{
 			File arq = new File(caminhoPai + "/" + nomeDoArquivo);
@@ -63,13 +67,18 @@ public class ManipularArquivo {
 			Map<Integer, String> arvoresDePastas = new TreeMap<>();
 	
 			if (!arq.exists()) {
-				System.out.println("Erro 12510 : arqivo ou pasta inexistente");
+				System.out.println("Erro 12510 : arqivo ou pasta nao existe");
+				
 			} else {
 				if (arq.isFile()) {
 					arq.delete();
 				} else {
+					//apagar todas as pastas e arquivos no caso de ser uma pasta
+					//caso as pasta que o programa esta deletando conter outras ele armazenado e executa um for recursivo abaixo.
 					for (int i = 0; i < filhos.length; i++) {
+						
 						File pastaTemporaria = new File(arq + "/" + filhos[i]);
+						
 						if (pastaTemporaria.isFile()) {
 							pastaTemporaria.delete();
 						} else {
@@ -85,10 +94,10 @@ public class ManipularArquivo {
 						}
 	
 					}
-	
+					//apaga as subPasta 
 					for (Integer a : arvoresDePastas.keySet()) {
 						try {
-							ExcluirArquivos(arvoresDePastas.get(a));
+							excluirArquivos(arvoresDePastas.get(a));
 						} catch (NullPointerException e) {
 						}
 					}
@@ -111,8 +120,15 @@ public class ManipularArquivo {
 	 * @param caminhoPai Passa-se o caminho completo ex:"/home/eclipse/program" ||
 	 *                   "/home/eclipse/program.exe"
 	 */
-	private static void ExcluirArquivos(String caminhoCompleto) {
-		File arq = new File(new File(caminhoCompleto).getParent() + "/" + new File(caminhoCompleto).getName());
+	private static void excluirArquivos(String caminhoCompleto) {
+		
+		/*
+		 * Melhorar o codigo abaixo muitas instancia do File sendo iniciada if("*")
+		 *    solucao Usar a classe privada excluirArq(String)
+		 */
+		
+		
+		File arq = new File(new File(new File(caminhoCompleto).getAbsolutePath()).getParent() + "/" + new File(caminhoCompleto).getName());
 		System.out.println(arq);
 		String[] filhos = arq.list();
 		Map<Integer, String> arvoresDePastas = new TreeMap<>();

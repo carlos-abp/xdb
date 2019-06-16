@@ -18,77 +18,96 @@ public class ManipularConteudo
 
     /**
      *
-     * @param Texto texto a introduzir no arquivo.
+     * @param texto texto a introduzir no arquivo.
      * @param arq arquiva para a inscrisao.
      * @param adicionar se deseja acresentar ao texto original ou nao.
      */
-    public static void escreverNoArquivo(String Texto, File arq, Boolean adicionar)
+	public static void escreverNoArquivo(String texto, File arq, Boolean adicionar)
     {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(arq, adicionar))) {
-            bw.append(Texto + String.format("%n"));
-        }
-        catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+    	//Plano para nao duplicar dados a ser inserido no arquivo
+    	if(VerificarOuAtualizar.arquivoExiste(arq.getAbsolutePath())) 
+    	{
+	        try (BufferedWriter bw = new BufferedWriter(new FileWriter(arq, adicionar))) {
+	            bw.append(String.format("%s%n", texto));
+	        }
+	        catch (IOException e) {
+	            System.out.println(e.getMessage());
+	        }
+    	}
+    	
     }
 
-    /**
-     *
-     * @param Arq diretori completo
-     */
-    public static void limparOArquivo(File Arq)
-    {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(Arq))) {
-            bw.append("");
-        }
-        catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
+ 
     /**
      * metodo que realiza a introducao de texto em uma linha bem expecifica
      *
-     * @param Texto texto a escrever na linha. para posicao = 0 *nao feito
-     * @param Arq arquiva para a inscrisao.
-     * @param Posicao a linha que deseja reeditar.
+     * @param texto texto a escrever na linha. 
+     * @param arq arquiva para a inscrisao.
+     * @param posicao a linha que deseja reeditar.  0 *nao feito
      */
-    public static void escreverNoArquivo(String Texto, File Arq, int Posicao)
+    public static void escreverNoArquivo(String texto, File arq, int posicao)
     {
-        if (Posicao != 0) {
-
-            Map<Integer, String> textoKM = new TreeMap<>(lerNoArquivo(Arq));
-            textoKM.put(Posicao, Texto);
-
-            if (VerificarOuAtualizar.arquivoExiste(Arq.getPath())) {
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(Arq, false))) {
-                    for (int a = 0; a < textoKM.size(); a++) {
-                        bw.append(textoKM.get(a + 1) + String.format("%n"));
-                    }
-                }
-                catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-            else {
-                //mensagem de erro
-            }
-
+       
+        Map<Integer, String> textoKM = new TreeMap<>(lerNoArquivo(arq));
+        
+                
+        
+        //para linha especifica
+        
+        if(posicao > 0)
+        {
+	        if(textoKM.size()  < posicao) 
+	        {
+	        	//intera o map onde as linhas do arquivo nem existem
+	        	for(int i = textoKM.size()+1 ; i < posicao;i++) {
+	        		
+	        			textoKM.put(i,"");
+	        	}
+	        	
+	        	textoKM.put(posicao, texto);
+	        	ManipularConteudo.limparOArquivo(arq);
+	        	
+	        	for (Integer a : textoKM.keySet()) {
+	        	   
+	               ManipularConteudo.escreverNoArquivo(textoKM.get(a),arq, true);
+	            }
+	        }
+	        
+	        //escreve no arquivo se todas as linha antes da posicao existe
+	        
+	        if(textoKM.keySet().size() > posicao) 
+	        {	
+	        		textoKM.remove(posicao-1);
+	        		textoKM.put(posicao-1, texto);
+	        		ManipularConteudo.limparOArquivo(arq);
+	        	
+	               for (Integer a : textoKM.keySet()) {
+	                   ManipularConteudo.escreverNoArquivo(textoKM.get(a),arq, true);
+	               }
+	            
+	        }
+        
         }
+        //ele apenas adiciona no arquivo na proxima linha
         else {
-            // para o int posisao = 0
+        	ManipularConteudo.escreverNoArquivo(texto, arq, true);
         }
-    }
+        
+    
+  }
+            
 
+        
+        
     /**
      *
-     * @param arq arquiva para a inscrisao.
-     * @param linha linha que deseja ler
-     * @return A leitura do arquivo
+     * @param  arq Diretorio completo do arquivo para a inscrisao.
+     * @param linha Linha que deseja ler
+     * @return A leitura da linha desejada || null se der um erro
      */
     public static String lerNoArquivo(File arq, int linha)
     {
-        if (VerificarOuAtualizar.arquivoExiste(arq.getPath())) {
+        if (VerificarOuAtualizar.arquivoExiste(arq.getAbsolutePath())) {
 
             try (BufferedReader br = new BufferedReader(new FileReader(arq))) {
                 String texto = br.readLine();
@@ -103,9 +122,11 @@ public class ManipularConteudo
                         contador++;
                     }
                 }
+             
             }
             catch (IOException e) {
                 System.out.println("Erro 12507: " + e.getMessage());
+                return null;
             }
         }
         return null;
@@ -113,12 +134,13 @@ public class ManipularConteudo
 
     /**
      *
-     * @param arq arquiva para a inscrisao.
-     * @return linha todas mapeada devido o retono ser map e provem uma manipulacao mais facil do texto
+     * @param arq Diretorio completo do arquivo para a inscrisao.
+     * @return linha todas mapeada devido o retono ser map e provem uma manipulacao mais facil do texto  || null se der erro
      */
     public static Map<Integer, String> lerNoArquivo(File arq)
     {
-        if (VerificarOuAtualizar.arquivoExiste(arq.getPath())) {
+        if (VerificarOuAtualizar.arquivoExiste(arq.getAbsolutePath())) 
+        {
 
             Map<Integer, String> textoKM = new TreeMap<>();
 
@@ -126,9 +148,10 @@ public class ManipularConteudo
 
                 String texto = br.readLine();
 
-                int contador = 1;
+                int contador = 0;
 
                 while (texto != null) {
+                	
                     textoKM.put(contador, texto);
                     contador++;
                     texto = br.readLine();
@@ -145,4 +168,20 @@ public class ManipularConteudo
         }
         return null;
     }
+    /**
+    *
+    * @param Arq Diretorio completo do arquivo.
+    */
+   public static void limparOArquivo(File Arq)
+   {
+   	if(VerificarOuAtualizar.arquivoExiste(Arq.getAbsolutePath())) {
+	        try (BufferedWriter bw = new BufferedWriter(new FileWriter(Arq))) {
+	            bw.append("");
+	        }
+	        catch (IOException e) {
+	            System.out.println(e.getMessage());
+	        }
+   	}
+   }
+
 }

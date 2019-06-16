@@ -17,47 +17,50 @@ public class VerificarOuAtualizar
     public static Boolean arquivoExiste(String caminhoCompleto)
     {
         File arq = new File(caminhoCompleto);
-        return arq.exists();
-
+        if(arq.exists())
+        	return true;
+        else {
+    		System.out.println("Erro 12542 : nao foi possivel encontrar o arquivo");
+    		return false;
+    	}
     }
 
     /**
-     *
-     * @param caminhoCompleto caminho completo ex: /home/carlos-abp/NetBeansProjects/XDB/config/texto.txt
-     * @param ativarOUdesativar altera a permicao do arquivo se ele pode ser escrito ou nao
+     *Metodo para altera a permicao de escrita do arquivo
+     * @param caminhoCompleto caminho completo ex: /home/carlos-abp/PROJETOS/Libs/teste.txt
+     * @param ativarOUdesativar 
      * @return se ele e te permicao para escrever ou nao
      */
-    public static Boolean arquivoEscreviviel(String caminhoCompleto, char ativarOUdesativar)
+    public static Boolean arquivoEscreviviel(String caminhoCompleto,Boolean ativarOUdesativar)
     {
         File arq = new File(caminhoCompleto);
-        switch (ativarOUdesativar) {
-            case 'a':
+        
+        if(ativarOUdesativar) 
                 arq.setWritable(true);
-                break;
-            case 'd':
+                
+        else
                 arq.setWritable(false);
-                break;
-        }
+                
         return arq.canWrite();
     }
 
     /**
-     *
-     * @param caminhoCompleto caminho completo ex: /home/carlos-abp/NetBeansProjects/XDB/config/texto.txt
+     *Metodo para altera a permicao de leitura do arquivo
+     * @param caminhoCompleto caminho completo ex: /home/carlos-abp/PROJETOS/Libs/teste.txt
      * @param ativarOUdesativar altera a permicao do arquivo se ele pode ser lido ou nao
      * @return permicao do arquivo se ele pode se lido ou nao
      */
-    public static Boolean arquivoLido(String caminhoCompleto, char ativarOUdesativar)
+    public static Boolean arquivoLido(String caminhoCompleto, Boolean ativarOUdesativar)
     {
         File arq = new File(caminhoCompleto);
-        switch (ativarOUdesativar) {
-            case 'a':
-                arq.setReadable(true);
-                break;
-            case 'd':
-                arq.setReadable(false);
-                break;
-        }
+        
+        if(ativarOUdesativar) 
+            arq.setReadable(true);
+            
+        else
+            arq.setReadable(false);
+            
+    
         return arq.canRead();
     }
 

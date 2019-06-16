@@ -33,12 +33,12 @@ public class ManipularXDB
      */
     public void criarBaseDeDados(File caminho)
     {
-        String x = caminho.toString() + "/" + nomeDoXDB + "/";
+        String caminhoCompleto= caminho.toString() + "/" + nomeDoXDB + "/";
 
-        if (!new File(x).exists()) {
-            ManipularArquivo.criarPasta(x);
-            ManipularArquivo.criarArquivo(x, nomeDoXDB + ".xdb");
-            ManipularArquivo.criarArquivo(x, ".cabecalho");
+        if (!new File(caminhoCompleto).exists()) {
+            ManipularArquivo.criarPasta(caminhoCompleto);
+            ManipularArquivo.criarArquivo(caminhoCompleto, nomeDoXDB + ".xdb");
+            ManipularArquivo.criarArquivo(caminhoCompleto, ".cabecalho");
         }
         else {
             System.out.println("Base de dados XDB ja existente");

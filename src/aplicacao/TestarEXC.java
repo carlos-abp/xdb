@@ -34,8 +34,8 @@ public class TestarEXC {
 	  //bd.renomearBaseDeDados("GAME");
 	 
 	 List<String> listaConfig = new ArrayList<>();
-	 listaConfig.add("id");
-	 listaConfig.add("String/^:4:5");
+	 listaConfig.add("id,nome");
+	 listaConfig.add("double/3.3:*,String/12:*:s:r");
 	 listaConfig.add("cod=eus");
 	 listaConfig.add("link=gmail.com");
 	 

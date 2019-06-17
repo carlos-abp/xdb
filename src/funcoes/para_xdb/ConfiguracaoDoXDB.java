@@ -6,6 +6,7 @@ import funcoes.para_arquivos.VerificarOuAtualizar;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
@@ -135,290 +136,290 @@ public class ConfiguracaoDoXDB {
 		List<String> cabecalhoCompleto = new ArrayList<>();
 
 		String[] trechoRecortado = trecho.split(",");
-		String erro = "";
+		List<String> Formatado = new ArrayList<String>();
+
 		for (String a : trechoRecortado) {
 
-			String[] verificar = a.split("/");
+			String[] argsVerificar = a.split("/");
 
-			switch (verificar[0].toUpperCase()) {
+			switch (argsVerificar[0].toUpperCase()) {
 
 			case "STRING":
+
+				String[] argsValidos = new String[] { "*", "<", ">", "num" };
+				String numInserido = "";
+				Boolean charDiferente = true;
+				List<Integer> posicao = new ArrayList<Integer>();
+				String formatado = "";
+
 				try {
-					boolean argumentoVazio = verificar[1].contains("?");
-					boolean letraDeForma = verificar[1].contains("^");
-					String numVerificado = "";
-					String formatado = "STRING/";
 
-					if (verificar[1].split(":").length <= 3) {
+					String[] listaDeArgs = argsVerificar[1].split(":");
 
-						if (argumentoVazio && letraDeForma) 
-						{
-							String[] temporario = verificar[1].split(":");
+					if (listaDeArgs.length <= 3) {
+						for (String st : listaDeArgs) {
+							for (int i = 0; i < 3; i++) {
 
-							for (String b : temporario) {
+								if (st.equals(argsValidos[i])) {
 
-								if (!"?".equals(b.trim()) && !"^".equals(b.trim())) {
-									if (verificarCARACTERouINTEGER("num", b)) {
-										numVerificado = b;
-									} else {
-										System.out.println("Erro 12563 Argumentos de STRING.. <?:num:^>");
-										return null;
-									}
+									posicao.add(i);
+									charDiferente = false;
+									break;
+
+								} else if (verificarCARACTERouINTEGER("num", st)) {
+									numInserido = st;
+									charDiferente = false;
+									break;
 								}
-
+								charDiferente = true;
 							}
-							if (!numVerificado.isEmpty()) 
-								formatado = ("STRING/" + numVerificado + ":?:^");
-							else
-								formatado = ("STRING/?:^");
-						}
-						
-
-						
-
-						} else if (argumentoVazio && !numVerificado.isEmpty()) {
-							formatado = ("STRING/" + numVerificado + ":?");
-						} else if (letraDeForma && !numVerificado.isEmpty()) {
-							formatado = ("STRING/" + numVerificado + ":^");
-
-						} else if (argumentoVazio) {
-							formatado = ("STRING/?");
-						} else if (!numVerificado.isEmpty()) {
-							formatado = ("STRING/" + numVerificado);
-						} else {
-							formatado = ("STRING/^");
+							if (charDiferente) {
+								System.out.println("Erro   simbolo nao reconhecido " + st);
+								return null;
+							}
 						}
 
+						Collections.sort(posicao);
+						if (!numInserido.isEmpty()) {
+							formatado += "STRING/" + numInserido;
+						}
+
+						for (int st = 0; st < posicao.size(); st++) {
+
+							if (!numInserido.isEmpty())
+								formatado += ":" + argsValidos[posicao.get(st)];
+							else {
+								if (st == 0)
+									formatado += "STRING/" + argsValidos[posicao.get(st)];
+								else
+									formatado += ":" + argsValidos[posicao.get(st)];
+							}
+						}
+
+					} else {
+						System.out.println("Erro muitos argumentos em STRING");
+						return null;
+					}
+
+				} catch (Exception e) {
 					
-
-					if (0 != cabecalhoCompleto.size()) {
-						if (verificar[1].split(":").length > 3) {
-							System.out.println("Erro 12562 Argumentos a mais do indicado");
-							return null;
-						}
-						cabecalhoCompleto.add("," + formatado);
-					} else {
-						if (verificar[1].split(":").length > 3) {
-							System.out.println("Erro 12562 Argumentos a mais do indicado");
-							return null;
-						}
-						cabecalhoCompleto.add(formatado);
-
-					}
-
-				} catch (ArrayIndexOutOfBoundsException e) {
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add(",STRING/");
-					} else {
-						cabecalhoCompleto.add("STRING/");
-					}
+						formatado += "STRING/";
 				}
-
+				
+				if (Formatado.isEmpty())
+					Formatado.add(formatado);
+				else
+					Formatado.add(","+formatado);
 				break;
-
+				
+				
 			case "INTEGER":
+				
+				
+				String[] argsValidosI = new String[] { "*", "num" };
+				String numInseridoI = "";
+				Boolean charDiferenteI = true;
+				List<Integer> posicaoI = new ArrayList<Integer>();
+				String formatadoI = "";
 
 				try {
-					boolean argumentoVazio = verificar[1].contains("?");
-					String numVerificado = "";
-					String formatado = "INTEGER/";
 
-					if (verificar[1].split(":").length <= 2) {
+					String[] listaDeArgsI = argsVerificar[1].split(":");
 
-						String[] temporario = verificar[1].split(":");
+					if (listaDeArgsI.length <= 2) {
+						for (String it : listaDeArgsI) {
+							for (int i = 0; i < 2; i++) {
 
-						for (String b : temporario) {
+								if (it.equals(argsValidosI[i])) {
 
-							if (!"?".equals(b.trim())) {
-								if (verificarCARACTERouINTEGER("num", b)) {
-									numVerificado = b;
+									posicaoI.add(i);
+									charDiferenteI = false;
+									break;
 
-								} else {
-									System.out.println("Erro 12562 Argumentos de INTEGER.. <?:num>");
-									return null;
+								} else if (verificarCARACTERouINTEGER("num", it)) {
+									numInseridoI = it;
+									charDiferenteI = false;
+									break;
 								}
+								charDiferenteI = true;
 							}
-
+							if (charDiferenteI) {
+								System.out.println("Erro   simbolo nao reconhecido " + it);
+								return null;
+							}
 						}
 
-						if (argumentoVazio && !numVerificado.isEmpty()) {
-							formatado = ("INTEGER/" + numVerificado + ":?");
-						} else if (argumentoVazio && !numVerificado.isEmpty()) {
-							formatado = ("INTEGER/?:^");
-						} else if (argumentoVazio) {
-							formatado = ("INTEGER/?");
-						} else if (!numVerificado.isEmpty()) {
-							formatado = ("INTEGER/" + numVerificado);
+						Collections.sort(posicaoI);
+						if (!numInseridoI.isEmpty()) {
+							formatadoI += "INTEGER/" + numInseridoI;
 						}
 
-					}
+						for (int st = 0; st < posicaoI.size(); st++) {
 
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add("," + formatado);
+							if (!numInseridoI.isEmpty())
+								formatadoI += ":" + argsValidosI[posicaoI.get(st)];
+							else {
+								if (st == 0)
+									formatadoI += "INTEGER/" + argsValidosI[posicaoI.get(st)];
+								else
+									formatadoI += ":" + argsValidosI[posicaoI.get(st)];
+							}
+						}
+
 					} else {
-						if (verificar[1].split(":").length > 2) {
-							System.out.println("Erro 12562 Argumentos de DOUBLE.. <?:num.num>");
-							return null;
-						}
-						cabecalhoCompleto.add(formatado);
-
+						System.out.println("Erro muitos argumentos em INTEGER");
+						return null;
 					}
 
-				} catch (ArrayIndexOutOfBoundsException e) {
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add(",INTEGER/");
-					} else {
-						cabecalhoCompleto.add("INTEGER/");
-					}
+				} catch (Exception e) {
+					
+						formatadoI += "INTEGER/";
+					
 				}
-
+				if (Formatado.isEmpty())
+					Formatado.add(formatadoI);
+				else
+					Formatado.add(","+formatadoI);
 				break;
 			case "DOUBLE":
+				
+				
+				String[] argsValidosD = new String[] { "*", "num.num" };
+				String numInseridoD = "";
+				Boolean charDiferenteD = true;
+				List<Integer> posicaoD = new ArrayList<Integer>();
+				String formatadoD = "";
+
 				try {
-					boolean argumentoVazio = verificar[1].contains("?");
 
-					String numVerificado = "";
-					String formatado = "DOUBLE/";
+					String[] listaDeArgsD = argsVerificar[1].split(":");
 
-					if (verificar[1].split(":").length <= 2) {
+					if (listaDeArgsD.length <= 2) {
+						for (String dou : listaDeArgsD) {
+							for (int i = 0; i < 2; i++) {
 
-						String[] temporario = verificar[1].split(":");
+								if (dou.equals(argsValidosD[i])) {
 
-						for (String b : temporario) {
+									posicaoD.add(i);
+									charDiferenteD = false;
+									break;
 
-							if (!"?".equals(b.trim())) {
-								if (verificarCARACTERouINTEGER("num", b)) {
-									numVerificado = b;
-								} else {
-									System.out.println("Erro 12562 Argumentos de DOUBLE.. <?:num.num>");
-									return null;
+								} else if (verificarCARACTERouINTEGER("num", dou)) {
+									numInseridoD = dou;
+									charDiferenteD = false;
+									break;
 								}
+								charDiferenteD = true;
 							}
-
+							if (charDiferenteD) {
+								System.out.println("Erro   simbolo nao reconhecido " + dou);
+								return null;
+							}
 						}
 
-						if (argumentoVazio && !numVerificado.isEmpty()) {
-							formatado = ("DOUBLE/" + numVerificado + ":?");
-						} else if (argumentoVazio) {
-							formatado = ("DOUBLE/?");
-						} else if (!numVerificado.isEmpty()) {
-							formatado = ("DOUBLE/" + numVerificado);
+						Collections.sort(posicaoD);
+						if (!numInseridoD.isEmpty()) {
+							formatadoD += "DOUBLE/" + numInseridoD;
 						}
 
-					}
+						for (int st = 0; st < posicaoD.size(); st++) {
 
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add("," + formatado);
+							if (!numInseridoD.isEmpty())
+								formatadoD += ":" + argsValidosD[posicaoD.get(st)];
+							else {
+								if (st == 0)
+									formatadoD += "DOUBLE/" + argsValidosD[posicaoD.get(st)];
+								else
+									formatadoD += ":" + argsValidosD[posicaoD.get(st)];
+							}
+						}
+
 					} else {
-						if (verificar[1].split(":").length > 3) {
-							System.out.println("Erro 12562 Argumentos de DOUBLE.. <?:num.num>");
-							return null;
-						}
-						cabecalhoCompleto.add(formatado);
-
+						System.out.println("Erro muitos argumentos em DOUBLE");
+						return null;
 					}
 
-				} catch (ArrayIndexOutOfBoundsException e) {
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add(",DOUBLE/");
-					} else {
-						cabecalhoCompleto.add("DOUBLE/");
-					}
+				} catch (Exception e) {
+					
+						formatadoD += "DOUBLE/";
+		
 				}
-
+				if (Formatado.isEmpty())
+					Formatado.add(formatadoD);
+				else
+					Formatado.add(","+formatadoD);
 				break;
+
 			case "BOOLEAN":
+				String[] argsValidosB = new String[] { "*", "num.num" };
+				String numInseridoB = "";
+				Boolean charDiferenteB = true;
+				List<Integer> posicaoB = new ArrayList<Integer>();
+				String formatadoB = "";
+
 				try {
-					boolean argumentoVazio = verificar[1].contains("?");
-					boolean separadorDeArgumentos = verificar[1].contains("^");
-					String formatado = "BOOLEAN/";
 
-					if (separadorDeArgumentos) {
-						String[] temp = verificar[1].split(":");
+					String[] listaDeArgsD = argsVerificar[1].split(":");
 
-						if (temp.length == 2 && argumentoVazio) {
-							formatado = ("BOOLEAN/?:^");
-						} else {
-							System.out.println("Erro 12562 Argumentos de BOOLEAN.. <?:^>");
-							return null;
+					if (listaDeArgsD.length <= 2) {
+						for (String it : listaDeArgsD) {
+							for (int i = 0; i < 2; i++) {
+
+								if (it.equals(argsValidosB[i])) {
+
+									posicaoB.add(i);
+									charDiferenteI = false;
+									break;
+
+								} else if (verificarCARACTERouINTEGER("num", it)) {
+									numInseridoI = it;
+									charDiferenteI = false;
+									break;
+								}
+								charDiferenteI = true;
+							}
+							if (charDiferenteB) {
+								System.out.println("Erro   simbolo nao reconhecido " + it);
+								return null;
+							}
 						}
 
-					}
-					if (argumentoVazio && !separadorDeArgumentos) {
-						formatado = ("BOOLEAN/?");
-					}
-
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add("," + formatado);
-					} else {
-						if (verificar[1].split(":").length > 3) {
-							System.out.println("Erro 12562 Argumentos de DOUBLE.. <?:num.num>");
-							return null;
+						Collections.sort(posicaoB);
+						if (!numInseridoB.isEmpty()) {
+							formatadoB += "BOOLEAN/" + numInseridoB;
 						}
-						cabecalhoCompleto.add(formatado);
 
-					}
+						for (int st = 0; st < posicaoB.size(); st++) {
 
-				} catch (ArrayIndexOutOfBoundsException e) {
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add(",BOOLEAN/");
+							if (!numInseridoB.isEmpty())
+								formatadoB += ":" + argsValidosB[posicaoB.get(st)];
+							else {
+								if (st == 0)
+									formatadoB += "BOOLEAN/" + argsValidosB[posicaoB.get(st)];
+								else
+									formatadoB += ":" + argsValidosB[posicaoB.get(st)];
+							}
+						}
+
 					} else {
-						cabecalhoCompleto.add("BOOLEAN/");
+						System.out.println("Erro muitos argumentos em BOOLEAN");
 					}
+
+				} catch (Exception e) {
+				
+						formatadoB += "BOOLEAN/";
+					
 				}
-
+				if (Formatado.isEmpty())
+					Formatado.add(formatadoB);
+				else
+					Formatado.add(","+formatadoB);
 				break;
-			case "CHAR":
-				try {
-					boolean argumentoVazio = verificar[1].contains("?");
-					boolean letraDeForma = verificar[1].contains("^");
-					String formatado = "CHAR/";
-
-					if (verificar[1].split(":").length <= 2) {
-
-						if (argumentoVazio && letraDeForma) {
-							formatado = ("CHAR/?:^");
-						} else if (argumentoVazio) {
-							formatado = ("CHAR/?");
-						} else if (letraDeForma) {
-							formatado = ("CHAR/^");
-
-						}
-
-					}
-
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add("," + formatado);
-					} else {
-						if (verificar[1].split(":").length > 3) {
-							System.out.println("Erro 12562 Argumentos de DOUBLE.. <?:num.num>");
-							return null;
-						}
-						cabecalhoCompleto.add(formatado);
-
-					}
-
-				} catch (ArrayIndexOutOfBoundsException e) {
-					if (0 != cabecalhoCompleto.size()) {
-						cabecalhoCompleto.add(",CHAR/");
-					} else {
-						cabecalhoCompleto.add("CHAR/");
-					}
-				}
-
-				break;
-			default:
-				erro += "'" + verificar[0];
 
 			}
 
 		}
-		if (!erro.isEmpty()) {
-			System.out.println("Erro 12561 : tipo de dado nao compativel " + erro);
-			return null;
-		} else
-			return cabecalhoCompleto;
-
+		return Formatado;
+		
 	}
-
 }

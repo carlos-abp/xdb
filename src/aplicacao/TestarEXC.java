@@ -1,8 +1,10 @@
 package aplicacao;
 
 import java.io.File;
-
+import java.util.ArrayList;
+import java.util.List;
 import funcoes.para_arquivos.*;
+import funcoes.para_xdb.ConfiguracaoDoXDB;
 import funcoes.para_xdb.ManipularXDB;
 
 /**
@@ -24,14 +26,21 @@ public class TestarEXC {
 	   File arq = new File("TESTANDO/Libs");
 	  
 	   
-	  ManipularXDB bd = new ManipularXDB();
+	  ManipularXDB bd = new ManipularXDB(arq,"GAME");
+	 ConfiguracaoDoXDB cbd = new ConfiguracaoDoXDB(arq,"GAME");
 	  
-	  bd.setNomeDoXDB("ringo");
-	  bd.setCaminhoDoXDB(arq);
-	  
-	  bd.renomearBaseDeDados("teste");
-			  
 	  //bd.criarBaseDeDados();
+			  
+	  //bd.renomearBaseDeDados("GAME");
+	 
+	 List<String> listaConfig = new ArrayList<>();
+	 listaConfig.add("id");
+	 listaConfig.add("String/^:4:5");
+	 listaConfig.add("cod=eus");
+	 listaConfig.add("link=gmail.com");
+	 
+	  cbd.escreverConfig(listaConfig);
+	  
 //  
    }
 

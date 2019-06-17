@@ -2,8 +2,11 @@ package funcoes.para_xdb;
 
 import funcoes.para_arquivos.ManipularArquivo;
 import java.io.File;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 /**
  *
@@ -28,24 +31,42 @@ public class ManipularXDB
     }
 //----------------------------------------------------------------------------------------------------------
 
-    /**
-     *
-     * cria-se uma base de dados XDB
-     *@return criado ou nao criado
-     */
-    public Boolean criarBaseDeDados()
-    {
-        if(nomeDoXDB == null || nomeDoXDB.isEmpty())
+    private Boolean integridaDosDados() {
+    	if(nomeDoXDB == null || nomeDoXDB.isEmpty())
         {
         	 System.out.println("Erro 12549 nome do banco nao atribuido.");
         	 return false;
         }
         if(caminhoDaPasta == null || caminhoDaPasta.toString().isEmpty())
         {
-        	 System.out.println("Erro 12549 diretorio do banco nao atribuido.");
+        	 System.out.println("Erro 12551 diretorio do banco nao atribuido.");
         	 return false;
         }
-        else 
+        
+        return true;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     *
+     * cria-se uma base de dados XDB
+     *@return criado ou nao criado
+     */
+    
+    public Boolean criarBaseDeDados()
+    {
+        if(integridaDosDados())
         {
         	
         	caminhoCompleto = new File(caminhoDaPasta + "/"+nomeDoXDB); 
@@ -62,6 +83,10 @@ public class ManipularXDB
 	        }
 	        return true;
         }
+        else {
+        	System.out.println("Erro 12543 nao foi possivel criar a base de dados");
+        	return false;
+        }
     }
 
     
@@ -71,21 +96,51 @@ public class ManipularXDB
     }
 
     
-    public void renomearBaseDeDados(String novoNomeDoXDB)
+    public Boolean renomearBaseDeDados(String novoNomeDoXDB)
     {
     	
     	if(!novoNomeDoXDB.isEmpty() || novoNomeDoXDB != null) 
     	{
-    		new File(caminhoDaPasta+"/"+nomeDoXDB).renameTo(new File(caminhoDaPasta+"/"+novoNomeDoXDB));
-        	
-        	caminhoCompleto = new File(caminhoDaPasta+"/"+novoNomeDoXDB);
-        	
-        	new File(caminhoCompleto+"/"+nomeDoXDB+".xdb").renameTo(new File(caminhoCompleto+"/"+novoNomeDoXDB+".xdb"));
-        	
+    		if(integridaDosDados()) {
+	    		new File(caminhoDaPasta+"/"+nomeDoXDB).renameTo(new File(caminhoDaPasta+"/"+novoNomeDoXDB));
+	        	
+	        	caminhoCompleto = new File(caminhoDaPasta+"/"+novoNomeDoXDB);
+	        	
+	        	new File(caminhoCompleto+"/"+nomeDoXDB+".xdb").renameTo(new File(caminhoCompleto+"/"+novoNomeDoXDB+".xdb"));
+	        	return true;
+    		}
     	}      
-    
+    	return false;
     }
 
+
+    public Boolean moverBaseDeDados(File diretorioAMover) 
+    {
+    	if(integridaDosDados()) {
+    		
+    		Path arqsAMover = Paths.get(new File(caminhoDaPasta+"/"+nomeDoXDB).toURI());
+    		Path dirAlvo = Paths.get(new File(diretorioAMover+"/"+nomeDoXDB).toURI());
+    		
+    		try {
+    			
+    			Files.move(arqsAMover, dirAlvo, StandardCopyOption.REPLACE_EXISTING);
+    			caminhoDaPasta = diretorioAMover;
+    			caminhoCompleto = new File(caminhoDaPasta+"/"+nomeDoXDB);
+    			return true;
+    			
+			} catch (Exception e) {
+				e.getMessage();
+				return false;
+			}
+    		
+    	}
+    	return false;
+    }
+    
+    
+    
+    
+    
 //_______________________________________________________________________________________________________
     public void setNomeDoXDB(String novoNomeDoXDB)
     {

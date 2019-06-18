@@ -35,8 +35,8 @@ public class TestarEXC {
 	 
 	 List<String> listaConfig = new ArrayList<>();
 	 listaConfig.add("id,nome");
-	 listaConfig.add("double/3.3:*,String/12:*:s:r");
-	 listaConfig.add("cod=eus");
+	 listaConfig.add("double/3.3:*,String/12:*");
+	 listaConfig.add("code=zus");
 	 listaConfig.add("link=gmail.com");
 	 
 	  cbd.escreverConfig(listaConfig);

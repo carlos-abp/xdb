@@ -29,24 +29,7 @@ public class ConfiguracaoDoXDB {
 	}
 
 //------------------------------------------------------------------------------------------------
-	private static boolean verificarCARACTERouINTEGER(String tipo, String caracter) {
-		String numeros = "0123456789.";
-		String caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-		if ("num".equals(tipo)) {
-			boolean temp = true;
-			for (int j = 0; j < caracter.length(); j++) {
-				if (!numeros.contains("" + caracter.charAt(j))) {
-					temp = false;
-				}
-			}
-//+++
-			return temp;
-		} else if ("car".equals(tipo)) {
-			return caracteres.contains(caracter);
-		}
-		return false;
-	}
+	
 
 	/**
 	 * Funcao Para Editar o cabecalho
@@ -166,7 +149,7 @@ public class ConfiguracaoDoXDB {
 									charDiferente = false;
 									break;
 
-								} else if (verificarCARACTERouINTEGER("num", st)) {
+								} else if (DADOS.verificarCARACTERouINTEGER("num", st)) {
 									numInserido = st;
 									charDiferente = false;
 									break;
@@ -202,20 +185,18 @@ public class ConfiguracaoDoXDB {
 					}
 
 				} catch (Exception e) {
-					
-						formatado += "STRING/";
+
+					formatado += "STRING/";
 				}
-				
+
 				if (Formatado.isEmpty())
 					Formatado.add(formatado);
 				else
-					Formatado.add(","+formatado);
+					Formatado.add("," + formatado);
 				break;
-				
-				
+
 			case "INTEGER":
-				
-				
+
 				String[] argsValidosI = new String[] { "*", "num" };
 				String numInseridoI = "";
 				Boolean charDiferenteI = true;
@@ -236,7 +217,7 @@ public class ConfiguracaoDoXDB {
 									charDiferenteI = false;
 									break;
 
-								} else if (verificarCARACTERouINTEGER("num", it)) {
+								} else if (DADOS.verificarCARACTERouINTEGER("num", it)) {
 									numInseridoI = it;
 									charDiferenteI = false;
 									break;
@@ -272,18 +253,18 @@ public class ConfiguracaoDoXDB {
 					}
 
 				} catch (Exception e) {
-					
-						formatadoI += "INTEGER/";
-					
+					formatadoI += "INTEGER/";
 				}
+				
 				if (Formatado.isEmpty())
 					Formatado.add(formatadoI);
 				else
-					Formatado.add(","+formatadoI);
+					Formatado.add("," + formatadoI);
 				break;
+				
+				
 			case "DOUBLE":
-				
-				
+
 				String[] argsValidosD = new String[] { "*", "num.num" };
 				String numInseridoD = "";
 				Boolean charDiferenteD = true;
@@ -304,7 +285,7 @@ public class ConfiguracaoDoXDB {
 									charDiferenteD = false;
 									break;
 
-								} else if (verificarCARACTERouINTEGER("num", dou)) {
+								} else if (DADOS.verificarCARACTERouINTEGER("num", dou)) {
 									numInseridoD = dou;
 									charDiferenteD = false;
 									break;
@@ -340,65 +321,53 @@ public class ConfiguracaoDoXDB {
 					}
 
 				} catch (Exception e) {
-					
-						formatadoD += "DOUBLE/";
-		
+
+					formatadoD += "DOUBLE/";
+
 				}
 				if (Formatado.isEmpty())
 					Formatado.add(formatadoD);
 				else
-					Formatado.add(","+formatadoD);
+					Formatado.add("," + formatadoD);
 				break;
 
 			case "BOOLEAN":
-				String[] argsValidosB = new String[] { "*", "num.num" };
-				String numInseridoB = "";
+				String[] argsValidosB = new String[] {"*"};
 				Boolean charDiferenteB = true;
 				List<Integer> posicaoB = new ArrayList<Integer>();
 				String formatadoB = "";
 
 				try {
 
-					String[] listaDeArgsD = argsVerificar[1].split(":");
+					String[] listaDeArgsB = argsVerificar[1].split(":");
 
-					if (listaDeArgsD.length <= 2) {
-						for (String it : listaDeArgsD) {
+					if (listaDeArgsB.length <= 2) {
+						for (String bo : listaDeArgsB) {
 							for (int i = 0; i < 2; i++) {
 
-								if (it.equals(argsValidosB[i])) {
+								if (bo.equals(argsValidosB[i])) {
 
 									posicaoB.add(i);
-									charDiferenteI = false;
-									break;
-
-								} else if (verificarCARACTERouINTEGER("num", it)) {
-									numInseridoI = it;
-									charDiferenteI = false;
+									charDiferenteB = false;
 									break;
 								}
-								charDiferenteI = true;
+
+								charDiferenteB = true;
 							}
 							if (charDiferenteB) {
-								System.out.println("Erro   simbolo nao reconhecido " + it);
+								System.out.println("Erro   simbolo nao reconhecido " + bo);
 								return null;
 							}
 						}
 
 						Collections.sort(posicaoB);
-						if (!numInseridoB.isEmpty()) {
-							formatadoB += "BOOLEAN/" + numInseridoB;
-						}
 
 						for (int st = 0; st < posicaoB.size(); st++) {
-
-							if (!numInseridoB.isEmpty())
+							if (st == 0)
+								formatadoB += "BOOLEAN/" + argsValidosB[posicaoB.get(st)];
+							else
 								formatadoB += ":" + argsValidosB[posicaoB.get(st)];
-							else {
-								if (st == 0)
-									formatadoB += "BOOLEAN/" + argsValidosB[posicaoB.get(st)];
-								else
-									formatadoB += ":" + argsValidosB[posicaoB.get(st)];
-							}
+
 						}
 
 					} else {
@@ -406,20 +375,73 @@ public class ConfiguracaoDoXDB {
 					}
 
 				} catch (Exception e) {
-				
-						formatadoB += "BOOLEAN/";
-					
+
+					formatadoB += "BOOLEAN/";
+
 				}
 				if (Formatado.isEmpty())
 					Formatado.add(formatadoB);
 				else
-					Formatado.add(","+formatadoB);
+					Formatado.add("," + formatadoB);
+				break;
+
+			case "CHAR":
+				String[] argsValidosC = new String[] { "*", "num.num" };
+				Boolean charDiferenteC = true;
+				List<Integer> posicaoC = new ArrayList<Integer>();
+				String formatadoC = "";
+
+				try {
+
+					String[] listaDeArgsC = argsVerificar[1].split(":");
+
+					if (listaDeArgsC.length <= 2) {
+						for (String ch : listaDeArgsC) {
+							for (int i = 0; i < 2; i++) {
+
+								if (ch.equals(argsValidosC[i])) {
+
+									posicaoC.add(i);
+									charDiferenteC = false;
+									break;
+								}
+								charDiferenteC = true;
+							}
+							if (charDiferenteC) {
+								System.out.println("Erro   simbolo nao reconhecido " + ch);
+								return null;
+							}
+						}
+
+						Collections.sort(posicaoC);
+
+						for (int st = 0; st < posicaoC.size(); st++) {
+
+							if (st == 0)
+								formatadoC += "CHAR/" + argsValidosC[posicaoC.get(st)];
+							else
+								formatadoC += ":" + argsValidosC[posicaoC.get(st)];
+
+						}
+
+					} else {
+						System.out.println("Erro muitos argumentos em CHAR");
+					}
+
+				} catch (Exception e) {
+
+					formatadoC += "CHAR/";
+
+				}
+				if (Formatado.isEmpty())
+					Formatado.add(formatadoC);
+				else
+					Formatado.add("," + formatadoC);
 				break;
 
 			}
-
 		}
 		return Formatado;
-		
+
 	}
 }

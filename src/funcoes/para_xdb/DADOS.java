@@ -4,7 +4,7 @@ public class DADOS {
 //++ implementar para double
 	public static boolean verificarCARACTERouINTEGER(String tipo, String caracter) {
 		String numeros = "0123456789.";
-		String caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 		if ("num".equals(tipo)) {
 			boolean temp = true;
@@ -15,7 +15,8 @@ public class DADOS {
 			}
 //+++
 			return temp;
-		} else if ("car".equals(tipo)) {
+		}
+		else if ("char".equals(tipo)) {
 			return caracteres.contains(caracter);
 		}
 		return false;

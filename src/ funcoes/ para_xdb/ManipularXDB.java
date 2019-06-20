@@ -44,20 +44,7 @@ public class ManipularXDB
         }
         
         return true;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }  
     /**
      *
      * cria-se uma base de dados XDB
@@ -135,12 +122,7 @@ public class ManipularXDB
     		
     	}
     	return false;
-    }
-    
-    
-    
-    
-    
+    }    
 //_______________________________________________________________________________________________________
     public void setNomeDoXDB(String novoNomeDoXDB)
     {

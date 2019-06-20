@@ -46,7 +46,7 @@ public class TestarEXC
 	//	cbd.escreverConfig(listaConfig);
 		
 		CRUD crud = new CRUD(bd);
-		System.out.println(crud.criarDado("Carlos"));
+		System.out.println(crud.criarDado("11"));
 
 //  
 	}

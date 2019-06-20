@@ -26,7 +26,7 @@ public class CRUD
 
 	}
 
-	// --------------------------------------------------------
+// --------------------------------------------------------
 
 	public Boolean criarDado(String oDados)
 	{
@@ -122,8 +122,7 @@ public class CRUD
 
 					case "CHAR":
 
-						if (valoresDeDados[ i ].length() <= 1 && DADOS.verificarCARACTERouINTEGER("char", tiposEArgumentos[ i ]) 
-							)
+						if (valoresDeDados[ i ].length() <= 1)
 						{
 							temp = "";
 
@@ -164,18 +163,74 @@ public class CRUD
 							Formatado.add(temp);
 							System.out.println(Formatado);
 							break;
+
 						}
 						else
 						{
 							System.out.println("Tipo De Dados Invalido");
+							return false;
 						}
-						break;
+
 					case "INTEGER":
-						if (DADOS.verificarCARACTERouINTEGER("num", tiposEArgumentos[ i ]))
+
+						temp = "";
+
+						try
 						{
-							// gravar integer ou double implementar codigo
+							if (DADOS.verificarCARACTERouINTEGER("num", valoresDeDados[ i ]))
+							{
+								if (tiposEArgumentos[ 1 ].split(":")[ 0 ] != "*")
+								{
+									int numMax = Integer.parseInt(tiposEArgumentos[ 1 ].split(":")[ 0 ]);
+									int numDoDado = Integer.parseInt(valoresDeDados[ i ]);
+
+									if (tiposEArgumentos[ 1 ].contains("*") && !valoresDeDados[ i ].isEmpty() && numDoDado <= numMax)
+									{
+										temp = valoresDeDados[ i ];
+
+									}
+									if (numDoDado <= numMax)
+									{
+										temp = valoresDeDados[ i ];
+
+									}
+									else
+									{
+										System.out.println("O numero " + valoresDeDados[ i ] + " nao pode ser Salvo");
+										return false;
+									}
+								}
+
+								else
+								{
+									if (tiposEArgumentos[ 1 ].contains("*") && !valoresDeDados[ i ].isEmpty())
+									{
+										temp = valoresDeDados[ i ];
+
+									}
+									else
+									{
+										System.out.println("O valor nao " + valoresDeDados[ i ] + " pode ser vazio");
+										return false;
+									}
+								}
+							}
+							else
+							{
+								System.out.println("Erro este " + valoresDeDados[ i ] + " nao e um numero valido ");
+								return false;
+							}
+
 						}
+						catch (Exception e)
+						{
+							temp = valoresDeDados[ i ];
+						}
+
+						Formatado.add(temp);
+						System.out.println(Formatado);
 						break;
+
 					case "DOUBLE":
 						if (DADOS.verificarCARACTERouINTEGER("num", tiposEArgumentos[ i ]))
 						{

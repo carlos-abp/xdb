@@ -1,7 +1,4 @@
-/bin/
-/dist/
 *.classpath
 *.project
-*.mdj
 *.settings
 TESTANDO/*
